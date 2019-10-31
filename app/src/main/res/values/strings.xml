@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="button">Button</string>
+    <string name="title_activity_signup2">signup2</string>
+    <string name="todo">todo</string>
+    <string name="sign_in">sign_in</string>
+    <string name="sign_up">sign_up</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="forget_your_password">forget_your_password</string>
+    <string name="textPassword">mot de passe</string>
+    <string name="nom">Nom</string>
+    <string name="name">Name</string>
+    <string name="pop_up_tittle"> Are You a ?</string>
+    <string name="label_student"> Student </string>
+    <string name="label_teacher"> Teacher </string>
+    <string name="nextSignUp">NEXT</string>
+    <string name="submit">Submit</string>
+    <string-array name="levels_array">
+        <item>no level selected</item>
+        <item>GI1</item>
+        <item>GI2</item>
+        <item>GI3</item>
+    </string-array>
+</resources>
