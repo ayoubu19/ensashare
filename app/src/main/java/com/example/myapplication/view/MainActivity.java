@@ -76,15 +76,13 @@ public class MainActivity extends AppCompatActivity {
              new OnCompleteListener<AuthResult>() {
          @Override
          public void onComplete(@NonNull Task<AuthResult> task) {
-             Toast.makeText(getApplicationContext(), "jjjjj",
-                     Toast.LENGTH_SHORT).show();
+
              if (task.isSuccessful()){
 
                  loginProgress.setVisibility(View.VISIBLE);
                  signIn.setActivated(false);
                 FirebaseUser user = userAuth.getCurrentUser();
-                 Toast.makeText(getApplicationContext(), user.getDisplayName(),
-                         Toast.LENGTH_SHORT).show();
+
                  updateUI();
 
              }else{

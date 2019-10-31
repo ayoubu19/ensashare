@@ -98,10 +98,10 @@ public class signupstudent2 extends AppCompatActivity {
                                                       .setDisplayName(student.getUserName())
                                                       .setPhotoUri(FileUploader.uri)
                                                       .build();
-                                  studentAuth.getCurrentUser().updateProfile(profileUpdate);
+                                              studentAuth.getCurrentUser().updateProfile(profileUpdate);
 
                                             //  student.setProfilePicUrl(FileUploader.url);
-                                              student.setStudentId(studentAuth.getUid());
+                                             // student.setStudentId(studentAuth.getUid());
                                              // Toast.makeText(getApplicationContext(), "3333" +
                                                    //   FileUploader.url, Toast.LENGTH_SHORT).show();
                                               studentdao.registerStudent(student);

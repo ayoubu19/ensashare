@@ -2,18 +2,12 @@ package com.example.myapplication.model;
 
 public class Student extends User  {
 
-   private String studentId ;
+
    private String level ;
 
    public Student() {
     }
-   public String getStudentId() {
-        return studentId;
-    }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
 
 
 
@@ -34,7 +28,7 @@ public class Student extends User  {
     @Override
     public String toString() {
         return "Student{" +
-                "studentId='" + studentId + '\'' +
+
                 ", level='" + level + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
