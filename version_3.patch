@@ -1,0 +1,16 @@
+Index: app/src/main/java/com/example/myapplication/view/signupstudent2.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/myapplication/view/signupstudent2.java	(date 1572706268000)
++++ app/src/main/java/com/example/myapplication/view/signupstudent2.java	(date 1572706302992)
+@@ -103,7 +103,7 @@
+                                               studentAuth.getCurrentUser().updateProfile(profileUpdate);
+ 
+                                               student.setProfilePic(FileUploader.uri.toString());
+-                                              studentdao.registerStudent(student);
++                                             // studentdao.registerStudent(student);
+                                               //  Intent i = new Intent(getApplicationContext() , MainActivity.class);
+                                               //startActivity(i);
+ 
