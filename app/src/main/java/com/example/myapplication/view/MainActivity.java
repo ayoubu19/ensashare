@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = userAuth.getCurrentUser();
         if (user!=null){
-            updateUI();
+           // updateUI();
         }
     }
 }

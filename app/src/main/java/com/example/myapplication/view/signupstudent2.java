@@ -106,7 +106,8 @@ public class signupstudent2 extends AppCompatActivity {
                                               Toast.makeText(getApplicationContext(), student.getProfilePic()
                                                       , Toast.LENGTH_SHORT).show();
                                                studentdao.registerStudent(student);
-                                              //  Intent i = new Intent(getApplicationContext() , MainActivity.class);
+
+                                               //  Intent i = new Intent(getApplicationContext() , MainActivity.class);
                                               //startActivity(i);
 
 

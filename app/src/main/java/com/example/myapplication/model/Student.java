@@ -2,10 +2,14 @@ package com.example.myapplication.model;
 
 import com.example.myapplication.DAO.InvitationDao;
 
+import java.util.ArrayList;
+
 public class Student extends User  {
 
 
    private String level ;
+
+   private ArrayList<Group> groups;
 
 
 
