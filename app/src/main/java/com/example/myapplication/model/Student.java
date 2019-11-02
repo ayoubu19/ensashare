@@ -1,13 +1,16 @@
 package com.example.myapplication.model;
 
+import com.example.myapplication.DAO.InvitationDao;
+
 public class Student extends User  {
 
 
    private String level ;
 
+
+
    public Student() {
     }
-
 
 
 
@@ -28,14 +31,19 @@ public class Student extends User  {
     @Override
     public String toString() {
         return "Student{" +
+                "level='" + level + '\'' +
 
-                ", level='" + level + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", userName='" + userName + '\'' +
-
-
                 '}';
+    }
+
+    public void sendInvitation(Invitation invitation){
+
+        InvitationDao inv = new InvitationDao();
+        inv.stockInvitation(invitation);
+
     }
 }
 

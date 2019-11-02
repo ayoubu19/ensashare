@@ -87,6 +87,7 @@ public class signupstudent2 extends AppCompatActivity {
                                   if (task.isSuccessful()){
                                       fileUploader.uploadFile(imagePath ,progressDialog);
 
+
                                       Handler handler = new Handler();
 
 
@@ -98,17 +99,18 @@ public class signupstudent2 extends AppCompatActivity {
                                                       .setDisplayName(student.getUserName())
                                                       .setPhotoUri(FileUploader.uri)
                                                       .build();
+
                                               studentAuth.getCurrentUser().updateProfile(profileUpdate);
 
-                                            //  student.setProfilePicUrl(FileUploader.url);
-                                             // student.setStudentId(studentAuth.getUid());
-                                             // Toast.makeText(getApplicationContext(), "3333" +
-                                                   //   FileUploader.url, Toast.LENGTH_SHORT).show();
+                                              student.setProfilePic(FileUploader.uri.toString());
                                               studentdao.registerStudent(student);
+                                              //  Intent i = new Intent(getApplicationContext() , MainActivity.class);
+                                              //startActivity(i);
+
 
 
                                           }
-                                      }, 10000);
+                                      }, 8000);
 
 
 

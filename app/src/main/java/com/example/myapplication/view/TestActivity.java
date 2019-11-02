@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.model.Student;
+import com.example.myapplication.model.Teacher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,8 +25,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class TestActivity extends AppCompatActivity {
 private FirebaseAuth userAuth ;
 private FirebaseUser currentUser ;
+private  Student student ;
+private Teacher teacher ;
 private CircleImageView img ;
 private TextView username ;
+
 private DatabaseReference databaseReference ;
 private void init(){
     userAuth = FirebaseAuth.getInstance();
@@ -47,6 +52,16 @@ private void init(){
                     Toast.makeText(getApplicationContext(),"student",
                             Toast.LENGTH_SHORT).show();
 
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                     student = snapshot.getValue(Student.class);
+
+
+                    }
+
+                    username.setText(student.getFirstName()+" "+student.getLastName());
+                   // String firstName = dataSnapshot.child("firstName").getValue().toString();
+
+
 
                 }
                 else{
@@ -63,6 +78,6 @@ private void init(){
         });
 
         Glide.with(this).load(currentUser.getPhotoUrl()).into(img);
-        username.setText(currentUser.getDisplayName());
+       // username.setText(student.getFirstName()+" "+student.getLastName());
     }
 }

@@ -7,9 +7,15 @@ public abstract class User implements Serializable {
     protected String firstName;
     protected String lastName;
     protected String userName;
+    protected String ProfilePic ;
 
+    public String getProfilePic() {
+        return ProfilePic;
+    }
 
-
+    public void setProfilePic(String profilePic) {
+        ProfilePic = profilePic;
+    }
 
     public String getFirstName() {
         return firstName;
