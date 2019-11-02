@@ -103,7 +103,9 @@ public class signupstudent2 extends AppCompatActivity {
                                               studentAuth.getCurrentUser().updateProfile(profileUpdate);
 
                                               student.setProfilePic(FileUploader.uri.toString());
-                                             // studentdao.registerStudent(student);
+                                              Toast.makeText(getApplicationContext(), student.getProfilePic()
+                                                      , Toast.LENGTH_SHORT).show();
+                                               studentdao.registerStudent(student);
                                               //  Intent i = new Intent(getApplicationContext() , MainActivity.class);
                                               //startActivity(i);
 

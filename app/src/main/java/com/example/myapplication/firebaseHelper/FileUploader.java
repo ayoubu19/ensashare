@@ -58,7 +58,7 @@ public class FileUploader {
                           fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                               @Override
                                 public void onSuccess(Uri uri) {
-                                  Toast.makeText(context,  uri.toString(), Toast.LENGTH_SHORT).show();
+                                //  Toast.makeText(context,  uri.toString(), Toast.LENGTH_SHORT).show();
                                   FileUploader.uri= uri;
 
                                 //  Toast.makeText(context, " this is url " + url, Toast.LENGTH_SHORT).show();
