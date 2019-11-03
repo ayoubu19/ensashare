@@ -16,10 +16,24 @@
     <string name="label_teacher"> Teacher </string>
     <string name="nextSignUp">NEXT</string>
     <string name="submit">Submit</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_invitations">Invistations</string>
+    <string name="nav_Invitations">Invitations</string>
+    <string name="nav_notifications">Notifications</string>
+    <string name="nav_map">Map</string>
     <string-array name="levels_array">
         <item>no level selected</item>
         <item>GI1</item>
         <item>GI2</item>
         <item>GI3</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_fragment">home fragment</string>
+    <string name="invitatiion_fragment">invitatiion fragment</string>
+    <string name="notification_fragment">notification fragment</string>
+    <string name="map_fragment">map fragment</string>
+    <string name="notifictaion_fragment">notifictaion fragment</string>
+    <string name="map_frgament">map frgament</string>
 </resources>

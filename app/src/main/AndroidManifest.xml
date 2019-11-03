@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.TestActivity"></activity>
+        <activity android:name=".view.admin_Profile"></activity>
+        <activity android:name=".view.TestActivity" />
         <activity android:name=".view.signupteacher2$testProfile" />
         <activity android:name=".view.signupteacher2" />
         <activity android:name=".view.pop_up_listlevelsteacher" />

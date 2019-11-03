@@ -140,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
 
                                    Toast.makeText(getApplicationContext(),"profile admin",
                                            Toast.LENGTH_SHORT).show();
+                                    adminProfile = new Intent(getApplicationContext(),admin_Profile.class);
+                                    startActivity(adminProfile);
                                }
                                else {
                                    Toast.makeText(getApplicationContext(),"profile student",
