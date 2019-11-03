@@ -2,6 +2,7 @@ package com.example.myapplication.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -11,12 +12,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.DAO.StudentDao;
 import com.example.myapplication.R;
+import com.example.myapplication.model.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +38,11 @@ public class MainActivity extends AppCompatActivity {
     private Button signup1;
     private ProgressBar loginProgress ;
     private FirebaseAuth userAuth ;
-    private Intent i;
+    private Intent adminProfile;
+    private Intent studentProfile;
+    public static  boolean isStudent =false;
+    public static  boolean isAdmin =false;
+    private StudentDao studentDao ;
 
     private void init(){
 
@@ -38,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
     loginProgress.setVisibility(View.INVISIBLE);
     signup1 = (Button) findViewById(R.id.signUp);
     userAuth=FirebaseAuth.getInstance();
-    i=new Intent(getApplicationContext() ,TestActivity.class);
+    adminProfile=new Intent(getApplicationContext() ,TestActivity.class);
+    studentDao =new StudentDao();
 
     }
 
@@ -81,9 +97,77 @@ public class MainActivity extends AppCompatActivity {
 
                  loginProgress.setVisibility(View.VISIBLE);
                  signIn.setActivated(false);
-                FirebaseUser user = userAuth.getCurrentUser();
+              final FirebaseUser user = userAuth.getCurrentUser();
+                 isStudent(user.getDisplayName());
 
-                 updateUI();
+
+                 Handler handler = new Handler();
+
+
+                 handler.postDelayed(new Runnable() {
+                     @Override
+                     public void run() {
+
+                         Toast.makeText(getApplicationContext(), Boolean.toString(isStudent),
+                                 Toast.LENGTH_SHORT).show();
+                           if (isStudent){
+
+
+                studentDao.getStudentByUsenrName(user.getDisplayName(),getApplicationContext());
+                               Handler handler = new Handler();
+
+
+                               handler.postDelayed(new Runnable() {
+                                   @Override
+                                   public void run() {
+
+
+                     Student student =StudentDao.getStudent();
+                     HashMap<String, Object> groups =StudentDao.getGroups();
+
+                   if (groups.containsValue(student.getLevel())){
+
+                       Toast.makeText(getApplicationContext(),groups.get("name").toString(),
+                            Toast.LENGTH_SHORT).show();
+                         isAdmin(user.getDisplayName());
+
+                       Handler handler2 = new Handler();
+                       handler2.postDelayed(new Runnable() {
+                           @Override
+                           public void run() {
+
+                               if (isAdmin) {
+
+                                   Toast.makeText(getApplicationContext(),"profile admin",
+                                           Toast.LENGTH_SHORT).show();
+                               }
+                               else {
+                                   Toast.makeText(getApplicationContext(),"profile student",
+                                           Toast.LENGTH_LONG).show();
+                               }
+                           }
+                       }, 3000) ;
+                   }
+                   else {
+                       Toast.makeText(getApplicationContext(),"not verified yet",
+                               Toast.LENGTH_LONG).show();
+                   }
+                                   }
+                               }, 5000) ;
+
+
+
+
+                }
+
+                     }
+                     }, 8000) ;
+
+
+
+
+
+                //updateUI();
 
              }else{
                  Toast.makeText(getApplicationContext(),task.getException().getMessage(),
@@ -97,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateUI(){
-   startActivity(i);
+   startActivity(adminProfile);
    finish();
     }
 
@@ -108,5 +192,60 @@ public class MainActivity extends AppCompatActivity {
         if (user!=null){
            // updateUI();
         }
+    }
+
+    public void isStudent(String username){
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
+        Query query = databaseReference.orderByChild("userName")
+                .equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    MainActivity.isStudent=true;
+                    Toast.makeText(getApplicationContext(), Boolean.toString(isStudent),
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+    public void isAdmin(String username){
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("admins");
+        Query query = databaseReference.orderByChild("userName")
+                .equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    MainActivity.isAdmin=true;
+                    Toast.makeText(getApplicationContext(), Boolean.toString(isAdmin),
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 }

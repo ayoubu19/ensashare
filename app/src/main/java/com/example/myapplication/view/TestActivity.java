@@ -2,9 +2,7 @@ package com.example.myapplication.view;
 
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -13,12 +11,7 @@ import com.example.myapplication.model.Student;
 import com.example.myapplication.model.Teacher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,40 +35,7 @@ private void init(){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         init();
-        databaseReference= FirebaseDatabase.getInstance().getReference("students");
-        Query query = databaseReference.orderByChild("userName")
-                                       .equalTo(currentUser.getDisplayName());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Toast.makeText(getApplicationContext(),"student",
-                            Toast.LENGTH_SHORT).show();
 
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                     student = snapshot.getValue(Student.class);
-
-
-                    }
-
-                    username.setText(student.getFirstName()+" "+student.getLastName());
-                   // String firstName = dataSnapshot.child("firstName").getValue().toString();
-
-
-
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"teacher",
-                            Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         Glide.with(this).load(currentUser.getPhotoUrl()).into(img);
        // username.setText(student.getFirstName()+" "+student.getLastName());
