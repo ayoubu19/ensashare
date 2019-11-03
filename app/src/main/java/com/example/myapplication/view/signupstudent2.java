@@ -17,12 +17,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.DAO.StudentDao;
 import com.example.myapplication.R;
 import com.example.myapplication.firebaseHelper.FileUploader;
+import com.example.myapplication.model.Invitation;
 import com.example.myapplication.model.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class signupstudent2 extends AppCompatActivity {
     private ImageView imagebacksignup1;
@@ -85,7 +94,7 @@ public class signupstudent2 extends AppCompatActivity {
                               public void onComplete(@NonNull Task<AuthResult> task) {
 
                                   if (task.isSuccessful()){
-                                      fileUploader.uploadFile(imagePath ,progressDialog);
+                                   fileUploader.uploadFile(imagePath ,progressDialog);
 
 
                                       Handler handler = new Handler();
@@ -104,8 +113,58 @@ public class signupstudent2 extends AppCompatActivity {
 
                                               student.setProfilePic(FileUploader.uri.toString());
                                               Toast.makeText(getApplicationContext(), student.getProfilePic()
-                                                      , Toast.LENGTH_SHORT).show();
-                                               studentdao.registerStudent(student);
+                                                     , Toast.LENGTH_SHORT).show();
+
+                                              DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("groups");
+                                              Query query = databaseReference.orderByChild("name")
+                                                      .equalTo(student.getLevel());
+                                              query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                  @Override
+                                                  public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                      if (dataSnapshot.exists()) {
+                                                          Toast.makeText(getApplicationContext(),"admins",
+                                                                  Toast.LENGTH_SHORT).show();
+
+                                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                                                         Object data = (HashMap<String, Object>) snapshot.child("Admin").getValue();
+                                                         HashMap<String, Object> dataMap = (HashMap<String, Object>) data;
+
+                                                          Toast.makeText(getApplicationContext(),dataMap.get("userName").toString(),
+                                                                  Toast.LENGTH_SHORT).show();
+
+
+                                                            if(dataMap.get("level").toString().equals(student.getLevel())) {
+
+                                                               // Admin admin  =  group.getAdmin();
+
+                                                                Toast.makeText(getApplicationContext(),"okay",
+                                                                        Toast.LENGTH_SHORT).show();
+
+                                                              Invitation invitation = new Invitation(student.getFirstName()
+                                                                       , student.getLastName(), student.getProfilePic(),dataMap.get("userName").toString());
+
+                                                                Toast.makeText(getApplicationContext(), invitation.toString(),
+                                                                        Toast.LENGTH_SHORT).show();
+
+                                                               student.sendInvitation(invitation);
+                                                               studentdao.registerStudent(student);
+                                                            }
+
+                                                          }
+
+                                                      }
+
+
+                                                  }
+
+                                                  @Override
+                                                  public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                  }
+                                              });
+
+
 
                                                //  Intent i = new Intent(getApplicationContext() , MainActivity.class);
                                               //startActivity(i);
@@ -132,13 +191,8 @@ public class signupstudent2 extends AppCompatActivity {
                     Toast.makeText(signupstudent2.this,"passwords don t match ", Toast.LENGTH_LONG).show();
                 }
 
-
-
-
             }
         });
-
-
 
         imagebacksignup1.setOnClickListener(new View.OnClickListener() {
             @Override

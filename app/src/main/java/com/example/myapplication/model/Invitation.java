@@ -7,14 +7,22 @@ public class Invitation {
 
     private String firstName ;
     private String lastName  ;
-
+    private String profilePic ;
     private String admin ;
 
-    public Invitation(String firstName, String lastName, String admin) {
+    public Invitation(String firstName, String lastName, String profilePic, String admin) {
         this.firstName = firstName;
         this.lastName = lastName;
-
+        this.profilePic = profilePic;
         this.admin = admin;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 
     public String getFirstName() {
@@ -46,6 +54,7 @@ public class Invitation {
         return "Invitation{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", profilePic='" + profilePic + '\'' +
                 ", admin='" + admin + '\'' +
                 '}';
     }

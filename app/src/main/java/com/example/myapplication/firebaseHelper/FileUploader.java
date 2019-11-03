@@ -25,9 +25,7 @@ public class FileUploader {
     private Context context ;
     public static Uri uri;
 
-    public StorageReference getFileReference() {
-        return fileReference;
-    }
+
 
     public FileUploader(Context context, String location ) {
         mStorageRef = FirebaseStorage.getInstance().getReference(location);

@@ -9,13 +9,16 @@ public class Student extends User  {
 
    private String level ;
 
-   private ArrayList<Group> groups;
+   private ArrayList<String> groupsName;
 
 
 
    public Student() {
     }
 
+    public Student(String firstName, String lastName, String userName, String level) {
+        super();
+    }
 
 
     public String getLevel() {
