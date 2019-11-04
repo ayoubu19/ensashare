@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.R;
+import com.example.myapplication.model.Student;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class admin_Profile extends AppCompatActivity {
@@ -20,6 +21,7 @@ public class admin_Profile extends AppCompatActivity {
     private Fragment invitationFragment ;
     private Fragment notificationFragment ;
     private Fragment mapFragment ;
+    private Student student ;
 
 
 
@@ -38,6 +40,9 @@ public class admin_Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin__profile);
         init();
+        Bundle extras = getIntent().getExtras();
+        student = (Student) extras.getSerializable("student");
+
 
         //events
         mainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -73,5 +78,8 @@ public class admin_Profile extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_frame,framgment);
         fragmentTransaction.commit();
+    }
+    public Student getMyData() {
+        return student;
     }
 }

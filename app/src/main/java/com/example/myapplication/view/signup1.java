@@ -34,7 +34,7 @@ public class signup1 extends AppCompatActivity{
 
 
     public void init(){
-        profilePic = findViewById(R.id.imageview);
+        profilePic = findViewById(R.id.imageProfile);
 
         addImage = findViewById(R.id.addImage);
         firstName = findViewById(R.id.username);

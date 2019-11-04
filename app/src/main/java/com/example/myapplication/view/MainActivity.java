@@ -122,9 +122,9 @@ public class MainActivity extends AppCompatActivity {
                                    public void run() {
 
 
-                     Student student =StudentDao.getStudent();
+                     final Student student =StudentDao.getStudent();
                      HashMap<String, Object> groups =StudentDao.getGroups();
-
+                     student.setGroups(groups);
                    if (groups.containsValue(student.getLevel())){
 
                        Toast.makeText(getApplicationContext(),groups.get("name").toString(),
@@ -141,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
                                    Toast.makeText(getApplicationContext(),"profile admin",
                                            Toast.LENGTH_SHORT).show();
                                     adminProfile = new Intent(getApplicationContext(),admin_Profile.class);
+                                    adminProfile.putExtra("student",student);
+
                                     startActivity(adminProfile);
                                }
                                else {

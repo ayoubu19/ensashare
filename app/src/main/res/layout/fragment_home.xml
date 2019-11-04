@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/home_fragment" />
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="201dp"
+                    android:src="@drawable/shape6" />
+
+                <TextView
+                    android:id="@+id/nomComplet"
+                    android:layout_width="180dp"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="170dp"
+                    android:layout_marginTop="165dp"
+                    android:text="TextView"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="18sp" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageProfile"
+                    android:layout_width="156dp"
+                    android:layout_height="156dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="90dp"
+                    android:src="@drawable/student1"
+                    app:civ_border_color="#FFF"
+                    app:civ_border_width="1dp" />
+
+
+
+            </FrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 </FrameLayout>

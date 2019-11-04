@@ -27,7 +27,7 @@ private DatabaseReference databaseReference ;
 private void init(){
     userAuth = FirebaseAuth.getInstance();
     currentUser = userAuth.getCurrentUser();
-    img =(CircleImageView ) findViewById(R.id.imageview);
+    img =(CircleImageView ) findViewById(R.id.imageProfile);
     username = (TextView)findViewById(R.id.usernamo);
 }
     @Override
