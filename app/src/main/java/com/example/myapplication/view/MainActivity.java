@@ -124,10 +124,12 @@ public class MainActivity extends AppCompatActivity {
 
                      final Student student =StudentDao.getStudent();
                      HashMap<String, Object> groups =StudentDao.getGroups();
+
                      student.setGroups(groups);
+
                    if (groups.containsValue(student.getLevel())){
 
-                       Toast.makeText(getApplicationContext(),groups.get("name").toString(),
+                       Toast.makeText(getApplicationContext(),groups.get(student.getLevel()).toString(),
                             Toast.LENGTH_SHORT).show();
                          isAdmin(user.getDisplayName());
 
@@ -155,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                    else {
                        Toast.makeText(getApplicationContext(),"not verified yet",
                                Toast.LENGTH_LONG).show();
+                       loginProgress.setVisibility(View.INVISIBLE);
                    }
                                    }
                                }, 5000) ;

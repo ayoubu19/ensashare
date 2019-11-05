@@ -1,20 +1,45 @@
 package com.example.myapplication.view;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.model.Invitation;
+import com.example.myapplication.model.Student;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class InvitationsFragment extends Fragment {
+    DatabaseReference reference;
+    RecyclerView recyclerView;
+    ArrayList<Invitation> listInvitation;
+   InvitationAdapter adapter;
 
+   public void init(){
+
+       reference = FirebaseDatabase.getInstance().getReference("invitations");
+
+   }
 
     public InvitationsFragment() {
         // Required empty public constructor
@@ -22,10 +47,77 @@ public class InvitationsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_invitations, container, false);
+        View view = inflater.inflate(R.layout.fragment_invitations, container, false);
+        final Context context= getActivity().getApplicationContext();
+        final FragmentActivity c = getActivity();
+        admin_Profile activity = (admin_Profile) getActivity();
+        final Student student = activity.getMyData();
+        init();
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.invitationsRecycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+
+        Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show();
+
+        Query query = reference.orderByChild("admin")
+                .equalTo(student.getUserName());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listInvitation= new ArrayList<Invitation>();
+                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+                {
+                    Invitation invitation = dataSnapshot1.getValue(Invitation.class);
+                    listInvitation.add(invitation);
+                }
+                Toast.makeText(context, "okaaaaaaay", Toast.LENGTH_SHORT).show();
+               adapter = new InvitationAdapter(context,listInvitation,student.getLevel());
+               recyclerView.setAdapter(adapter);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(context, "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+
+
+       /*
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listInvitation= new ArrayList<Invitation>();
+                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+                {
+                    Invitation invitation = dataSnapshot1.getValue(Invitation.class);
+                    listInvitation.add(invitation);
+                }
+
+                adapter = new InvitationAdapter(context,listInvitation);
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(context, "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
+        return view ;
     }
 
 }

@@ -4,13 +4,28 @@ package com.example.myapplication.model;
 
 
 public class Invitation {
-
+    private String userName ;
     private String firstName ;
     private String lastName  ;
     private String profilePic ;
     private String admin ;
 
-    public Invitation(String firstName, String lastName, String profilePic, String admin) {
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+
+
+    public Invitation() {
+    }
+
+    public Invitation(String userName ,String firstName, String lastName, String profilePic, String admin) {
+        this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.profilePic = profilePic;
@@ -52,7 +67,8 @@ public class Invitation {
     @Override
     public String toString() {
         return "Invitation{" +
-                "firstName='" + firstName + '\'' +
+                "userName='" + userName + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", profilePic='" + profilePic + '\'' +
                 ", admin='" + admin + '\'' +

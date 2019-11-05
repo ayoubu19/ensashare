@@ -112,6 +112,9 @@ public class signupstudent2 extends AppCompatActivity {
                                               studentAuth.getCurrentUser().updateProfile(profileUpdate);
 
                                               student.setProfilePic(FileUploader.uri.toString());
+                                              HashMap<String,Object> groups = new HashMap<>();
+                                              groups.put("entry","entry");
+                                              student.setGroups(groups);
                                               Toast.makeText(getApplicationContext(), student.getProfilePic()
                                                      , Toast.LENGTH_SHORT).show();
 
@@ -141,8 +144,9 @@ public class signupstudent2 extends AppCompatActivity {
                                                                 Toast.makeText(getApplicationContext(),"okay",
                                                                         Toast.LENGTH_SHORT).show();
 
-                                                              Invitation invitation = new Invitation(student.getFirstName()
+                                                              Invitation invitation = new Invitation(student.getUserName(),student.getFirstName()
                                                                        , student.getLastName(), student.getProfilePic(),dataMap.get("userName").toString());
+
 
                                                                 Toast.makeText(getApplicationContext(), invitation.toString(),
                                                                         Toast.LENGTH_SHORT).show();

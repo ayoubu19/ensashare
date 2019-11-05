@@ -24,7 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class HomeFragment extends Fragment {
 private TextView nomComplet ;
 private CircleImageView imageProfile ;
-    private FirebaseAuth userAuth ;
+private FirebaseAuth userAuth ;
     private FirebaseUser currentUser ;
 
 public void init(){

@@ -13,10 +13,10 @@ public class InvitationDao {
             this.databaseReference=nodeCreator.getDatabaseReference();
     }
     public void stockInvitation(Invitation invitation){
-        String InvitationId = databaseReference.push().getKey();
+        //String InvitationId = databaseReference.push().getKey();
 
 
-        databaseReference.child(InvitationId).setValue(invitation);
+        databaseReference.child(invitation.getUserName()).setValue(invitation);
 
     }
 }
