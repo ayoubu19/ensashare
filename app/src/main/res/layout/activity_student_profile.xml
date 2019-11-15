@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.admin_Profile">
+    tools:context=".view.student_profile">
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,7 +18,7 @@
         app:itemTextColor="@color/color"
 
 
-        app:menu="@menu/nav_items">
+        app:menu="@menu/student_profile_items">
 
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

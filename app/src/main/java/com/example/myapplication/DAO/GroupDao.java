@@ -21,6 +21,10 @@ public  class GroupDao {
     private DatabaseReference ref;
     private Group groupdao;
     private Context context;
+    private List<Group> groups;
+
+    public GroupDao() {
+    }
 
     public DatabaseReference getRef() {
         return ref;
@@ -57,13 +61,14 @@ public  class GroupDao {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Admin admin;
+                groups = new ArrayList<Group>();
                 String name = dataSnapshot.child("name").getValue().toString();
                 String urlImage = dataSnapshot.child("urlImage").getValue().toString();
                 String groupId = dataSnapshot.child("groupId").getValue().toString();
                 Object data = (HashMap<String, Object>) dataSnapshot.child("Admin").getValue();
                 HashMap<String, Object> dataMap = (HashMap<String, Object>) data;
                 admin = new Admin((String) dataMap.get("firstName"), (String) dataMap.get("lastName"), (String) dataMap.get("userName"),
-                       (String) dataMap.get("level"));
+                        (String) dataMap.get("level"), groupdao.getName());
                 Toast.makeText(context, "Name : " + admin.getUserName(), Toast.LENGTH_LONG).show();
                 GroupDao.this.groupdao.setName(name);
                 GroupDao.this.groupdao.setUrlImage(urlImage);
@@ -71,6 +76,7 @@ public  class GroupDao {
                 GroupDao.this.groupdao.setAdmin(admin);
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -95,24 +101,51 @@ public  class GroupDao {
                         Student student = new Student((String) studentData.get("firstName"), (String) studentData.get("lastName"), (String) studentData.get("userName"), (String) studentData.get("level"));
                         Toast.makeText(context, "Name : " + student.getUserName(), Toast.LENGTH_LONG).show();
                         studentList.add(student);
-                    } catch (Exception e) {  }
+                    } catch (Exception e) {
+                    }
                 }
             }
-            
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
         this.groupdao.setListStudents(studentList);
     }
 
 
+    public void getGroups(List<Object> listObjects,final Context context) {
+
+
+        for (int i = 0; i < listObjects.size(); i++) {
+            String level = listObjects.get(i).toString();
 
 
 
+            if (!level.contains("entry")) {
+
+                ref = FirebaseDatabase.getInstance().getReference().child("groups").child("group:" + level.toLowerCase());
+
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
 
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+
+                });
+            }
+
+
+        }
 
     }
+}

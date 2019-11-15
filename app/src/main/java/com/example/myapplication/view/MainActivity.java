@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void init(){
 
-    usernmae = (TextView)findViewById(R.id.username);
+    usernmae = (TextView)findViewById(R.id.groupname);
     password=(TextView)findViewById(R.id.password);
     signIn=(Button) findViewById(R.id.signIn);
     loginProgress =(ProgressBar)findViewById(R.id.loginProgress);
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     signup1 = (Button) findViewById(R.id.signUp);
     userAuth=FirebaseAuth.getInstance();
     adminProfile=new Intent(getApplicationContext() ,TestActivity.class);
+
     studentDao =new StudentDao();
 
     }
@@ -110,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
 
                          Toast.makeText(getApplicationContext(), Boolean.toString(isStudent),
                                  Toast.LENGTH_SHORT).show();
-                           if (isStudent){
+
+                          if (isStudent){
 
 
                 studentDao.getStudentByUsenrName(user.getDisplayName(),getApplicationContext());
@@ -148,8 +150,18 @@ public class MainActivity extends AppCompatActivity {
                                     startActivity(adminProfile);
                                }
                                else {
-                                   Toast.makeText(getApplicationContext(),"profile student",
+
+                                  Toast.makeText(getApplicationContext(),"profile student",
+
                                            Toast.LENGTH_LONG).show();
+
+                                   Intent studentProfile = new Intent(getApplicationContext(),student_profile.class);
+
+                                  studentProfile.putExtra("student",student);
+
+                                 startActivity(studentProfile);
+
+
                                }
                            }
                        }, 3000) ;

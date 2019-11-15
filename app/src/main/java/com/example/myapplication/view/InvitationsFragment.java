@@ -14,7 +14,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.DAO.AdminDao;
 import com.example.myapplication.R;
+import com.example.myapplication.model.Admin;
 import com.example.myapplication.model.Invitation;
 import com.example.myapplication.model.Student;
 import com.google.firebase.database.DataSnapshot;
@@ -32,14 +34,19 @@ import java.util.ArrayList;
 public class InvitationsFragment extends Fragment {
     DatabaseReference reference;
     RecyclerView recyclerView;
+    AdminDao adminDao;
     ArrayList<Invitation> listInvitation;
-   InvitationAdapter adapter;
+    InvitationAdapter adapter;
+    View view;
+    Admin admin;
+    Student student;
 
-   public void init(){
+    public void init(){
+        adminDao = new AdminDao(view.getContext(), student.getUserName());
+        adminDao.getAdmin();
+        reference = FirebaseDatabase.getInstance().getReference("invitations");
 
-       reference = FirebaseDatabase.getInstance().getReference("invitations");
-
-   }
+    }
 
     public InvitationsFragment() {
         // Required empty public constructor
@@ -51,11 +58,11 @@ public class InvitationsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_invitations, container, false);
+        this.view = inflater.inflate(R.layout.fragment_invitations, container, false);
         final Context context= getActivity().getApplicationContext();
         final FragmentActivity c = getActivity();
         admin_Profile activity = (admin_Profile) getActivity();
-        final Student student = activity.getMyData();
+        this.student = activity.getMyData();
         init();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.invitationsRecycler);
@@ -79,8 +86,7 @@ public class InvitationsFragment extends Fragment {
                     listInvitation.add(invitation);
                 }
                 Toast.makeText(context, "okaaaaaaay", Toast.LENGTH_SHORT).show();
-               adapter = new InvitationAdapter(context,listInvitation,student.getLevel());
-               recyclerView.setAdapter(adapter);
+               load();
 
 
             }
@@ -106,18 +112,35 @@ public class InvitationsFragment extends Fragment {
                     Invitation invitation = dataSnapshot1.getValue(Invitation.class);
                     listInvitation.add(invitation);
                 }
-
                 adapter = new InvitationAdapter(context,listInvitation);
                 recyclerView.setAdapter(adapter);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(context, "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
             }
         });*/
 
-        return view ;
+        return this.view ;
+    }
+
+    public void load(){
+        adminDao.getRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                InvitationsFragment.this.admin =  InvitationsFragment.this.adminDao.getAdminDao();
+                adapter = new InvitationAdapter(InvitationsFragment.this.getContext(),listInvitation,admin.getGroup());
+                recyclerView.setAdapter(adapter);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 }

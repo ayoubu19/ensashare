@@ -55,7 +55,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.My
 
 
 
-       holder.onAccepterClick(invitations.get(position),context,position);
+        holder.onAccepterClick(invitations.get(position),context,position);
 
         holder.onRefuserClick(position,invitations.get(position));
 
@@ -93,7 +93,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.My
 
                     databaseReference.setValue(taskMap, new DatabaseReference.CompletionListener() {
                         @Override
-                      public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
 
                             String groupName = level.toLowerCase();
                             DatabaseReference Reference = FirebaseDatabase.getInstance().getReference("groups").child("group:"+groupName).child("students").child(invitation.getUserName());
@@ -131,7 +131,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.My
             });
         }
 
-      public   void deleteItem(int index) {
+        public   void deleteItem(int index) {
             invitations.remove(index);
             notifyItemRemoved(index);
         }

@@ -43,7 +43,7 @@ public class signup1teacher extends AppCompatActivity {
     public void init(){
         firstName = findViewById(R.id.firstName);
         lastName = findViewById(R.id.lastName);
-        profilePict = findViewById(R.id.imageProfile);
+        profilePict = findViewById(R.id.imageGroup);
         addImagee = findViewById(R.id.addImage);
         dialog = new Dialog(this);
         textlist = (TextView) findViewById(R.id.levels);

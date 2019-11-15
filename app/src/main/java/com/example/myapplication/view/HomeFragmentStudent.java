@@ -33,7 +33,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragmentStudent extends Fragment {
 private TextView nomComplet ;
 private CircleImageView imageProfile ;
 private GroupDao groupDao;
@@ -50,7 +50,7 @@ public void init(){
 
 }
 
-    public HomeFragment() {
+    public HomeFragmentStudent() {
         // Required empty public constructor
     }
 
@@ -71,7 +71,7 @@ public void init(){
 
         init();
 
-        admin_Profile activity = (admin_Profile) getActivity();
+        student_profile activity = (student_profile) getActivity();
 
 
         Student student = activity.getMyData();

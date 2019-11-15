@@ -28,7 +28,7 @@ public class signupteacher2 extends AppCompatActivity {
 
 
     public void init(){
-        username =(EditText) findViewById(R.id.username);
+        username =(EditText) findViewById(R.id.groupname);
         password = (EditText) findViewById(R.id.password);
         passwordConfimed = (EditText) findViewById(R.id.passwordconfirmed);
         submit = (Button) findViewById(R.id.submit);
