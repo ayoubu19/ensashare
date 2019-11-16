@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.DAO.GroupDao;
+import com.example.myapplication.DAO.QuoteDao;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Group;
+import com.example.myapplication.model.Quote;
 import com.example.myapplication.model.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -41,12 +44,19 @@ private Group group;
 private FirebaseAuth userAuth ;
     private FirebaseUser currentUser ;
     RecyclerView recyclerView;
-    List<Group> listGroup;
+    ArrayList<Group> listGroup;
     GroupsAdapter adapter;
+    private Quote quot ;
+    private QuoteDao quoteDao ;
+    View view;
+    Context context ;
+    TextView quote ;
 
 public void init(){
     userAuth = FirebaseAuth.getInstance();
     currentUser = userAuth.getCurrentUser();
+    quoteDao = new QuoteDao(view.getContext());
+    quoteDao.getQuote();
 
 }
 
@@ -58,9 +68,10 @@ public void init(){
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        this.view = inflater.inflate(R.layout.fragment_home, container, false);
 
-       Context context= getActivity().getApplicationContext();
+        this.context= getActivity().getApplicationContext();
+        quote = (TextView)view.findViewById(R.id.quote);
         nomComplet = (TextView) view.findViewById(R.id.nomComplet);
         imageProfile = (CircleImageView) view.findViewById(R.id.imageGroup);
         recyclerView = (RecyclerView) view.findViewById(R.id.groupRecycle);
@@ -70,6 +81,7 @@ public void init(){
 
 
         init();
+        load();
 
         student_profile activity = (student_profile) getActivity();
 
@@ -91,66 +103,45 @@ public void init(){
         List <Object> list =  Collections.list(Collections.enumeration(groups.values()));
 
         groupDao.getGroups(list , context);
+        listGroup= groupDao.getGroups();
+        loadGroups();
 
 
-     /*   Iterator iterator = list.iterator();
-        iterator.next();
-        while(iterator.hasNext()) {
-            if (!iterator.next().toString().equals("entry")){
-
-                  String level =  iterator.next().toString();
-                 groupDao = new GroupDao(context ,level.toLowerCase());
-                 Toast.makeText(getContext(), level, Toast.LENGTH_LONG).show();
-                 HomeFragment.this.group = groupDao.getGroupDao();
-                 load();
-
-              //  listGroup.add(group);
-
-
-
-            }
-
-
-        }*/
-
-          // String nameGroup = groupName.toString().toLowerCase();
-
-
-
-       /* if (!nameGroup.equals("entry")){
-
-                GroupDao groupDao = new GroupDao(context ,nameGroup);
-                Group group = groupDao.getGroupDao();
-                listGroup.add(group);
-
-                Toast.makeText(context,listGroup.toString(), Toast.LENGTH_SHORT).show();
-
-            }*/
-
-
-
-
-     //   adapter = new GroupsAdapter(context,listGroup);
-       // recyclerView.setAdapter(adapter);
-
-
-        // Inflate the layout for this fragment
-
-        return view;
+        return this.view;
 
     }
 
     public  void load(){
-       groupDao.getRef().addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        quoteDao.getRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-           }
+                HomeFragmentStudent.this.quot=  HomeFragmentStudent.this.quoteDao.getQuoteDao();
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
-           }
-       });
+                HomeFragmentStudent.this.quote.setText(quot.getQuote());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+    }
+    public  void loadGroups(){
+        groupDao.getRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                adapter = new GroupsAdapter(HomeFragmentStudent.this.context, HomeFragmentStudent.this.listGroup);
+                recyclerView.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
 
     }

@@ -21,7 +21,12 @@ public  class GroupDao {
     private DatabaseReference ref;
     private Group groupdao;
     private Context context;
-    private List<Group> groups;
+
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
+    private ArrayList<Group> groups = new ArrayList<>();
 
     public GroupDao() {
     }
@@ -120,11 +125,10 @@ public  class GroupDao {
 
 
         for (int i = 0; i < listObjects.size(); i++) {
+
             String level = listObjects.get(i).toString();
 
-
-
-            if (!level.contains("entry")) {
+            if (!level.equals("entry")) {
 
                 ref = FirebaseDatabase.getInstance().getReference().child("groups").child("group:" + level.toLowerCase());
 
@@ -132,6 +136,11 @@ public  class GroupDao {
                     @Override
 
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                         Group g = dataSnapshot.getValue(Group.class);
+
+                         groups.add(g);
+
 
 
 
