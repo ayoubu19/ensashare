@@ -21,12 +21,16 @@ public  class GroupDao {
     private DatabaseReference ref;
     private Group groupdao;
     private Context context;
+    private ArrayList<Group> groups = new ArrayList<>();
+    private ArrayList<Group> clubs = new ArrayList<>();
+
+    public ArrayList<Group> getClub() {
+        return clubs;
+    }
 
     public ArrayList<Group> getGroups() {
         return groups;
     }
-
-    private ArrayList<Group> groups = new ArrayList<>();
 
     public GroupDao() {
     }
@@ -155,6 +159,39 @@ public  class GroupDao {
 
 
         }
+
+    }
+
+    public void getClubs(final List<Object> listObjects , final Context context) {
+
+                ref = FirebaseDatabase.getInstance().getReference().child("clubs");
+
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                   for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                       Group g = snapshot.getValue(Group.class);
+
+                       Toast.makeText(context, g.getName(), Toast.LENGTH_LONG).show();
+
+                      if (!listObjects.contains(g.getName())){
+
+                           clubs.add(g);
+                       }
+
+                   }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+
+                });
+
 
     }
 }

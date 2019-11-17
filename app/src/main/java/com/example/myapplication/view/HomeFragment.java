@@ -50,8 +50,11 @@ Context context ;
 View view;
 TextView quote ;
 RecyclerView recyclerView;
+RecyclerView clubRecyclerView;
 ArrayList<Group> listGroup;
+ArrayList<Group> listclub;
 GroupsAdapter adapter;
+ClubsAdapter adapterClub ;
 
 
 public void init(){
@@ -60,6 +63,7 @@ public void init(){
     quoteDao = new QuoteDao(view.getContext());
     quoteDao.getQuote();
     listGroup = new ArrayList<>() ;
+    listclub = new ArrayList<>() ;
 
 }
 
@@ -77,9 +81,13 @@ public void init(){
         nomComplet = (TextView) view.findViewById(R.id.nomComplet);
         imageProfile = (CircleImageView) view.findViewById(R.id.imageGroup);
         recyclerView = (RecyclerView) view.findViewById(R.id.groupRecycle);
+        clubRecyclerView = (RecyclerView) view.findViewById(R.id.clubRecycle);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager layoutManageri = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
+
+        clubRecyclerView.setLayoutManager(layoutManageri);
 
         init();
         load();
@@ -104,40 +112,17 @@ public void init(){
         Toast.makeText(context,list.toString(), Toast.LENGTH_SHORT).show();
 
        groupDao.getGroups(list , context);
-       listGroup= groupDao.getGroups();
+
+      groupDao.getClubs(list , context);
+
+       listGroup = groupDao.getGroups();
+
+       listclub= groupDao.getClub();
+
        loadGroups();
 
+      loadClubs();
 
-     /*   Iterator iterator = list.iterator();
-        iterator.next();
-        while(iterator.hasNext()) {
-            if (!iterator.next().toString().equals("entry")){
-
-                  String level =  iterator.next().toString();
-                 groupDao = new GroupDao(context ,level.toLowerCase());
-                 Toast.makeText(getContext(), level, Toast.LENGTH_LONG).show();
-                 HomeFragment.this.group = groupDao.getGroupDao();
-                 load();
-
-              //  listGroup.add(group);
-
-
-
-            }
-
-
-        }*/
-
-          // String nameGroup = groupName.toString().toLowerCase();
-
-
-
-
-
-
-
-     //   adapter = new GroupsAdapter(context,listGroup);
-       // recyclerView.setAdapter(adapter);
 
 
 
@@ -170,6 +155,23 @@ public void init(){
 
                 adapter = new GroupsAdapter(HomeFragment.this.context, HomeFragment.this.listGroup);
                 recyclerView.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+    }
+    public  void loadClubs(){
+        groupDao.getRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                adapterClub = new ClubsAdapter(HomeFragment.this.context, HomeFragment.this.listclub);
+                clubRecyclerView.setAdapter(adapterClub);
 
             }
 

@@ -64,10 +64,34 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Class group"
+                    android:textColor="#DB4F4F" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/groupRecycle"
                     android:layout_width="match_parent"
+                    android:layout_height="99dp" >
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="clubs you may be interested in "
+                    android:textColor="#D82323" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/clubRecycle"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
             </LinearLayout>
 
         </LinearLayout>
