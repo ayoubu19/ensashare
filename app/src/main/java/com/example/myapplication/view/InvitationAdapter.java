@@ -105,7 +105,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.My
                             s.setLevel(level);
                             Reference.setValue(s);
                             deleteItem(index);
-                            Reference = FirebaseDatabase.getInstance().getReference("invitations").child(invitation.getUserName());
+                            Reference = FirebaseDatabase.getInstance().getReference("invitations").child(invitation.getInvitationId());
                             Toast.makeText(context,databaseReference.toString(),Toast.LENGTH_SHORT).show();
 
                             Reference.removeValue();

@@ -53,8 +53,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="140dp"
                     android:src="@drawable/student1"
-                    app:civ_border_color="#FFF"
-                    app:civ_border_width="1dp" />
+
+                  />
 
 
             </FrameLayout>
@@ -69,8 +69,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="Class group"
-                    android:textColor="#DB4F4F" />
+                    android:text="My Groups"
+                    android:textColor="#000000"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:fontFamily="sans-serif-smallcaps"
+                     />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/groupRecycle"
@@ -84,8 +88,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="clubs you may be interested in "
-                    android:textColor="#D82323" />
+
+                    android:text="Recmmendations "
+                    android:textColor="#000000"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:fontFamily="sans-serif-smallcaps" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/clubRecycle"

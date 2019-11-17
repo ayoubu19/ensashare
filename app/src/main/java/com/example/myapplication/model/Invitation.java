@@ -4,6 +4,7 @@ package com.example.myapplication.model;
 
 
 public class Invitation {
+    private String invitationId ;
     private String userName ;
     private String firstName ;
     private String lastName  ;
@@ -19,12 +20,15 @@ public class Invitation {
         this.userName = userName;
     }
 
-
+    public String getInvitationId() {
+        return invitationId;
+    }
 
     public Invitation() {
     }
 
-    public Invitation(String userName ,String firstName, String lastName, String profilePic, String admin) {
+    public Invitation(String invitationId,String userName ,String firstName, String lastName, String profilePic, String admin) {
+        this.invitationId=invitationId;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -67,7 +71,8 @@ public class Invitation {
     @Override
     public String toString() {
         return "Invitation{" +
-                "userName='" + userName + '\'' +
+                "invitationId='" + invitationId + '\'' +
+                ", userName='" + userName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", profilePic='" + profilePic + '\'' +

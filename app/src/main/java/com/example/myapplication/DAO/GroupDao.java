@@ -174,8 +174,15 @@ public  class GroupDao {
                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
 
                        Group g = snapshot.getValue(Group.class);
+                       Object data = (HashMap<String, Object>) snapshot.child("Admin").getValue();
 
-                       Toast.makeText(context, g.getName(), Toast.LENGTH_LONG).show();
+                       HashMap<String, Object> dataMap = (HashMap<String, Object>) data;
+
+                       Admin admin = new Admin((String) dataMap.get("userName"), g.getName());
+
+                       g.setAdmin(admin);
+
+                       Toast.makeText(context, g.toString(), Toast.LENGTH_LONG).show();
 
                       if (!listObjects.contains(g.getName())){
 

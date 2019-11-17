@@ -58,6 +58,7 @@ public class Student extends User  {
     public void sendInvitation(Invitation invitation){
 
         InvitationDao inv = new InvitationDao();
+
         inv.stockInvitation(invitation);
 
     }

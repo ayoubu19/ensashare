@@ -111,7 +111,7 @@ public class signupstudent2 extends AppCompatActivity {
                                               Toast.makeText(getApplicationContext(), student.getProfilePic()
                                                      , Toast.LENGTH_SHORT).show();
 
-                                              String groupName = student.getLevel().toLowerCase();
+                                              final String groupName = student.getLevel().toLowerCase();
 
 
                                               DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("groups").child("group:"+groupName);
@@ -134,17 +134,22 @@ public class signupstudent2 extends AppCompatActivity {
                                                          Object data = (HashMap<String, Object>) dataSnapshot.child("Admin").getValue();
                                                          HashMap<String, Object> dataMap = (HashMap<String, Object>) data;
 
+
                                                           Toast.makeText(getApplicationContext(),dataMap.get("userName").toString(),
                                                                   Toast.LENGTH_SHORT).show();
 
-                                                              Invitation invitation = new Invitation(student.getUserName(),student.getFirstName()
-                                                                       , student.getLastName(), student.getProfilePic(),dataMap.get("userName").toString());
+                                                            String invitationid =student.getUserName()+"-"+groupName;
 
 
-                                                                Toast.makeText(getApplicationContext(), invitation.toString(),
+                                                            Invitation invitation = new Invitation(invitationid,student.getUserName(),student.getFirstName()
+                                                                      , student.getLastName(), student.getProfilePic(), dataMap.get("userName").toString());
+
+
+                                                                Toast.makeText(getApplicationContext(),invitation.toString(),
                                                                         Toast.LENGTH_SHORT).show();
 
-                                                          UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest
+
+                                                         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest
                                                                   .Builder()
                                                                   .setDisplayName(student.getUserName())
                                                                   .setPhotoUri(FileUploader.uri)
@@ -153,8 +158,10 @@ public class signupstudent2 extends AppCompatActivity {
                                                           studentAuth.getCurrentUser().updateProfile(profileUpdate);
 
 
-                                                                student.sendInvitation(invitation);
-                                                               studentdao.registerStudent(student);
+                                                            student.sendInvitation(invitation);
+
+                                                            studentdao.registerStudent(student);
+
                                                             }
 
 

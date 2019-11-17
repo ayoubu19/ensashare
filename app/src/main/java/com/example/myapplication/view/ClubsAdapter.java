@@ -46,7 +46,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
 
         Picasso.get().load(groups.get(position).getUrlImage()).into(holder.clubPic);
 
-        holder.onAccepterClick(context);
+        holder.onRequestClick(context,position);
 
     }
 
@@ -72,11 +72,11 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
 
 
         }
-        public void onAccepterClick(final Context context ) {
+        public void onRequestClick(final Context context , final int position ) {
             request.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, clubname.getText(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, groups.get(position).toString(), Toast.LENGTH_LONG).show();
 
                 }
             });
