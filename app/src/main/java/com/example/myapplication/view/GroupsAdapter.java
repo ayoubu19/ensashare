@@ -27,7 +27,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.MyViewHold
 
     public GroupsAdapter(Context c, ArrayList<Group> g) {
         context = c;
-       groups = g;
+        groups = g;
 
     }
 

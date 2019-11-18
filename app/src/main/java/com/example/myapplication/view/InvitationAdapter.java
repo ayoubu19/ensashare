@@ -84,37 +84,80 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.My
             accepter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students").child(invitation.getUserName()).child("groups");
 
-                    Map<String,Object> taskMap = new HashMap<>();
-                    taskMap.put(level , level);
+                    String[]isGroup=invitation.getInvitationId().split("-");
+                    if(!isGroup[1].startsWith("C")) {
+
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students").child(invitation.getUserName()).child("groups");
+
+                        Map<String, Object> taskMap = new HashMap<>();
+                        taskMap.put(level, level);
 
 
+                        databaseReference.setValue(taskMap, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
 
-                    databaseReference.setValue(taskMap, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                        String groupName = level.toLowerCase();
+                                        DatabaseReference Reference = FirebaseDatabase.getInstance().getReference("groups").child("group:" + groupName).child("students").child(invitation.getUserName());
+                                        Student s = new Student();
+                                        s.setUserName(invitation.getUserName());
+                                        s.setFirstName(invitation.getFirstName());
+                                        s.setLastName(invitation.getLastName());
+                                        s.setProfilePic(invitation.getProfilePic());
+                                        s.setLevel(level);
+                                        Reference.setValue(s);
+                                        deleteItem(index);
+                                        Reference = FirebaseDatabase.getInstance().getReference("invitations").child(invitation.getInvitationId());
+                                        Toast.makeText(context, databaseReference.toString(), Toast.LENGTH_SHORT).show();
 
-                            String groupName = level.toLowerCase();
-                            DatabaseReference Reference = FirebaseDatabase.getInstance().getReference("groups").child("group:"+groupName).child("students").child(invitation.getUserName());
-                            Student s = new Student();
-                            s.setUserName(invitation.getUserName());
-                            s.setFirstName(invitation.getFirstName());
-                            s.setLastName(invitation.getLastName());
-                            s.setProfilePic(invitation.getProfilePic());
-                            s.setLevel(level);
-                            Reference.setValue(s);
-                            deleteItem(index);
-                            Reference = FirebaseDatabase.getInstance().getReference("invitations").child(invitation.getInvitationId());
-                            Toast.makeText(context,databaseReference.toString(),Toast.LENGTH_SHORT).show();
+                                        Reference.removeValue();
 
-                            Reference.removeValue();
+                                        Toast.makeText(context, " accepter", Toast.LENGTH_SHORT).show();
 
-                            Toast.makeText(context,  " accepter", Toast.LENGTH_SHORT).show();
-                        }
 
-                    });
+                                    }
 
+                                }
+
+                        );
+
+                    }else{
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students").child(invitation.getUserName()).child("groups").child(level);
+
+                       /* Map<String, Object> taskMap = new HashMap<>();
+                        taskMap.put(level, level);*/
+
+
+                        databaseReference.setValue(level, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+
+                                        String clubName = level.toLowerCase();
+                                        DatabaseReference Reference = FirebaseDatabase.getInstance().getReference("clubs").child("club:" + clubName).child("students").child(invitation.getUserName());
+                                        Student s = new Student();
+                                        s.setUserName(invitation.getUserName());
+                                        s.setFirstName(invitation.getFirstName());
+                                        s.setLastName(invitation.getLastName());
+                                        s.setProfilePic(invitation.getProfilePic());
+                                        s.setLevel(level);
+                                        Reference.setValue(s);
+                                        deleteItem(index);
+                                        Reference = FirebaseDatabase.getInstance().getReference("invitations").child(invitation.getInvitationId());
+                                        Toast.makeText(context, databaseReference.toString(), Toast.LENGTH_SHORT).show();
+
+                                        Reference.removeValue();
+
+                                        Toast.makeText(context, " accepter", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+
+                                }
+
+                        );
+
+                    }
 
 
                 }

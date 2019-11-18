@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.DAO.GroupDao;
+import com.example.myapplication.DAO.InvitationDao;
 import com.example.myapplication.DAO.QuoteDao;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Group;
@@ -44,6 +45,9 @@ private Group group;
 private FirebaseAuth userAuth ;
     private FirebaseUser currentUser ;
     RecyclerView recyclerView;
+    RecyclerView clubRecyclerView;
+    ArrayList<Group> listclub;
+    ArrayList<String> listInvitations;
     ArrayList<Group> listGroup;
     GroupsAdapter adapter;
     private Quote quot ;
@@ -51,13 +55,19 @@ private FirebaseAuth userAuth ;
     View view;
     Context context ;
     TextView quote ;
+    ClubsAdapter adapterClub ;
+    private InvitationDao invitationDao ;
+    Student student;
 
 public void init(){
     userAuth = FirebaseAuth.getInstance();
     currentUser = userAuth.getCurrentUser();
     quoteDao = new QuoteDao(view.getContext());
     quoteDao.getQuote();
-
+    listclub = new ArrayList<>() ;
+    listInvitations= new ArrayList<>();
+    invitationDao = new InvitationDao();
+    listGroup = new ArrayList<>() ;
 }
 
     public HomeFragmentStudent() {
@@ -75,18 +85,20 @@ public void init(){
         nomComplet = (TextView) view.findViewById(R.id.nomComplet);
         imageProfile = (CircleImageView) view.findViewById(R.id.imageGroup);
         recyclerView = (RecyclerView) view.findViewById(R.id.groupRecycle);
+        clubRecyclerView = (RecyclerView) view.findViewById(R.id.clubRecycle);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager layoutManageri = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
 
+        clubRecyclerView.setLayoutManager(layoutManageri);
 
 
         init();
         load();
 
         student_profile activity = (student_profile) getActivity();
-
-
-        Student student = activity.getMyData();
+         student = activity.getMyData();
         String nomprenom =student.getFirstName()+" "+student.getLastName();
         groupDao = new GroupDao();
         nomComplet.setText(nomprenom);
@@ -101,10 +113,20 @@ public void init(){
         HashMap<String,Object> groups = student.getGroups();
 
         List <Object> list =  Collections.list(Collections.enumeration(groups.values()));
+        invitationDao.getInvitaions(context);
+        listInvitations=invitationDao.getInvitation();
+
 
         groupDao.getGroups(list , context);
-        listGroup= groupDao.getGroups();
+        groupDao.getClubs(list , context);
+
+
+
+        listGroup = groupDao.getGroups();
+        listclub= groupDao.getClub();
+
         loadGroups();
+        loadClubs();
 
 
         return this.view;
@@ -135,6 +157,24 @@ public void init(){
 
                 adapter = new GroupsAdapter(HomeFragmentStudent.this.context, HomeFragmentStudent.this.listGroup);
                 recyclerView.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+    }
+    public  void loadClubs(){
+        groupDao.getRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                adapterClub = new ClubsAdapter(HomeFragmentStudent.this.context, HomeFragmentStudent.this.listclub ,
+                        HomeFragmentStudent.this.listInvitations,  HomeFragmentStudent.this.student);
+                clubRecyclerView.setAdapter(adapterClub);
 
             }
 

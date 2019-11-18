@@ -134,6 +134,7 @@ public  class GroupDao {
 
             if (!level.equals("entry")) {
 
+                if (!level.startsWith("C"))  {
                 ref = FirebaseDatabase.getInstance().getReference().child("groups").child("group:" + level.toLowerCase());
 
                 ref.addValueEventListener(new ValueEventListener() {
@@ -141,11 +142,9 @@ public  class GroupDao {
 
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                         Group g = dataSnapshot.getValue(Group.class);
+                        Group g = dataSnapshot.getValue(Group.class);
 
-                         groups.add(g);
-
-
+                        groups.add(g);
 
 
                     }
@@ -155,6 +154,29 @@ public  class GroupDao {
                     }
 
                 });
+
+            }else{
+                    ref = FirebaseDatabase.getInstance().getReference().child("clubs").child("club:" + level.toLowerCase());
+
+                    ref.addValueEventListener(new ValueEventListener() {
+                        @Override
+
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            Group g = dataSnapshot.getValue(Group.class);
+
+                            groups.add(g);
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+
+                    });
+                }
+
             }
 
 

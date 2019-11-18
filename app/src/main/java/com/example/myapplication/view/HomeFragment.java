@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.DAO.GroupDao;
+import com.example.myapplication.DAO.InvitationDao;
 import com.example.myapplication.DAO.QuoteDao;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Group;
@@ -46,6 +47,7 @@ private FirebaseAuth userAuth ;
 private FirebaseUser currentUser ;
 private Quote quot ;
 private QuoteDao quoteDao ;
+private InvitationDao invitationDao ;
 Context context ;
 View view;
 TextView quote ;
@@ -53,17 +55,21 @@ RecyclerView recyclerView;
 RecyclerView clubRecyclerView;
 ArrayList<Group> listGroup;
 ArrayList<Group> listclub;
+ArrayList<String> listInvitations;
 GroupsAdapter adapter;
 ClubsAdapter adapterClub ;
+Student student ;
 
 
-public void init(){
+    public void init(){
     userAuth = FirebaseAuth.getInstance();
     currentUser = userAuth.getCurrentUser();
     quoteDao = new QuoteDao(view.getContext());
+    invitationDao = new InvitationDao();
     quoteDao.getQuote();
     listGroup = new ArrayList<>() ;
     listclub = new ArrayList<>() ;
+    listInvitations= new ArrayList<>();
 
 }
 
@@ -93,7 +99,7 @@ public void init(){
         load();
 
         admin_Profile activity = (admin_Profile) getActivity();
-        Student student = activity.getMyData();
+         student = activity.getMyData();
         String nomprenom =student.getFirstName()+" "+student.getLastName();
 
         groupDao = new GroupDao();
@@ -111,17 +117,21 @@ public void init(){
         List <Object> list =  Collections.list(Collections.enumeration(groups.values()));
         Toast.makeText(context,list.toString(), Toast.LENGTH_SHORT).show();
 
-       groupDao.getGroups(list , context);
+        invitationDao.getInvitaions(context);
+        listInvitations=invitationDao.getInvitation();
 
-      groupDao.getClubs(list , context);
 
-       listGroup = groupDao.getGroups();
+        groupDao.getGroups(list , context);
+        groupDao.getClubs(list , context);
 
-       listclub= groupDao.getClub();
 
-       loadGroups();
 
-      loadClubs();
+        listGroup = groupDao.getGroups();
+        listclub= groupDao.getClub();
+
+
+        loadGroups();
+        loadClubs();
 
 
 
@@ -148,6 +158,7 @@ public void init(){
 
 
     }
+
     public  void loadGroups(){
         groupDao.getRef().addValueEventListener(new ValueEventListener() {
             @Override
@@ -170,7 +181,7 @@ public void init(){
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                adapterClub = new ClubsAdapter(HomeFragment.this.context, HomeFragment.this.listclub);
+                adapterClub = new ClubsAdapter(HomeFragment.this.context, HomeFragment.this.listclub , HomeFragment.this.listInvitations,  HomeFragment.this.student);
                 clubRecyclerView.setAdapter(adapterClub);
 
             }
