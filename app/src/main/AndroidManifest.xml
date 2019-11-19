@@ -11,6 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+		<activity android:name=".filescardview"></activity>
+        <activity android:name=".view.group_posts" />
+        <activity android:name=".view.group" />
         <activity android:name=".view.student_profile"></activity>
         <activity android:name=".view.admin_Profile" />
         <activity android:name=".view.TestActivity" />

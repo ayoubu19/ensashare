@@ -24,8 +24,7 @@ public class Group implements Serializable {
     }
 
     private List<Teacher> listTeacher;
-    private  Admin admin ;
-
+    private Admin admin;
     private String groupId;
     private String urlImage;
 
@@ -64,6 +63,7 @@ public class Group implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
 
     @Override
     public String toString() {

@@ -1,4 +1,5 @@
 package com.example.myapplication.DAO;
+
 import android.content.Context;
 import android.widget.Toast;
 
@@ -7,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.example.myapplication.model.Admin;
 import com.example.myapplication.model.Group;
 import com.example.myapplication.model.Student;
+import com.example.myapplication.model.Teacher;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +25,13 @@ public  class GroupDao {
     private Context context;
     private ArrayList<Group> groups = new ArrayList<>();
     private ArrayList<Group> clubs = new ArrayList<>();
-
+    private Admin admindao;
+	    public Admin getAdmindao() {
+        return admindao;
+    }
+    public void setAdmindao(Admin admindao) {
+        this.admindao = admindao;
+    }
     public ArrayList<Group> getClub() {
         return clubs;
     }
@@ -64,65 +72,81 @@ public  class GroupDao {
         this.context = context;
         groupdao = new Group();
     }
-
-    public synchronized Group getGroupDao() {
+	public synchronized Group getGroupDao() {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Admin admin;
-                groups = new ArrayList<Group>();
                 String name = dataSnapshot.child("name").getValue().toString();
                 String urlImage = dataSnapshot.child("urlImage").getValue().toString();
                 String groupId = dataSnapshot.child("groupId").getValue().toString();
                 Object data = (HashMap<String, Object>) dataSnapshot.child("Admin").getValue();
                 HashMap<String, Object> dataMap = (HashMap<String, Object>) data;
                 admin = new Admin((String) dataMap.get("firstName"), (String) dataMap.get("lastName"), (String) dataMap.get("userName"),
-                        (String) dataMap.get("level"), groupdao.getName());
-                Toast.makeText(context, "Name : " + admin.getUserName(), Toast.LENGTH_LONG).show();
+                       (String) dataMap.get("level"), (String) dataMap.get("profilePic"));
                 GroupDao.this.groupdao.setName(name);
                 GroupDao.this.groupdao.setUrlImage(urlImage);
                 GroupDao.this.groupdao.setGroupId(groupId);
                 GroupDao.this.groupdao.setAdmin(admin);
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
         return this.groupdao;
     }
 
-    public void getListStudentGroup() {
+   
+	public Group getListsGroupDao() {
         List<Student> studentList = new ArrayList<Student>();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Student> studentList = new ArrayList<Student>();
-
+                List<Teacher> teacherList = new ArrayList<Teacher>();
+                //Toast.makeText(context, "Name : " + "okey", Toast.LENGTH_LONG).show();
                 HashMap<String, Object> dataMap = (HashMap<String, Object>) dataSnapshot.child("students").getValue();
                 for (String key : dataMap.keySet()) {
                     Object data = dataMap.get(key);
                     try {
                         HashMap<String, Object> studentData = (HashMap<String, Object>) data;
-                        Student student = new Student((String) studentData.get("firstName"), (String) studentData.get("lastName"), (String) studentData.get("userName"), (String) studentData.get("level"));
-                        Toast.makeText(context, "Name : " + student.getUserName(), Toast.LENGTH_LONG).show();
+                        Student student = new Student((String) studentData.get("firstName"), (String) studentData.get("lastName"), (String) studentData.get("userName"), (String) studentData.get("level"), (String) studentData.get("profilePic"));
+                   // Toast.makeText(context, "picture : " + student.getProfilePicUrl(), Toast.LENGTH_LONG).show();
                         studentList.add(student);
-                    } catch (Exception e) {
-                    }
+                    } catch (Exception e) {  }
                 }
+                dataMap = (HashMap<String, Object>) dataSnapshot.child("teachers").getValue();
+                for (String key : dataMap.keySet()) {
+                    Object data = dataMap.get(key);
+                    try {
+                        HashMap<String, Object> teacherData = (HashMap<String, Object>) data;
+                        Object levels = (Object) dataSnapshot.child("teachers").child(key).child("levels").getValue();
+                        ArrayList<String> levelList = (ArrayList) levels;
+                        Teacher teacher = new Teacher((String) teacherData.get("firstName"), (String) teacherData.get("lastName"), (String) teacherData.get("userName"),
+                                levelList , (String) teacherData.get("profilePic"));
+                        teacherList.add(teacher);
+                    } catch (Exception e) {  Toast.makeText(context, "exception" , Toast.LENGTH_LONG).show(); }
+                }
+
+                GroupDao.this.groupdao.setListStudents(studentList);
+                GroupDao.this.groupdao.setListTeacher(teacherList);
+                Admin admin;
+                Object data = (HashMap<String, Object>) dataSnapshot.child("Admin").getValue();
+                dataMap = (HashMap<String, Object>) data;
+                admin = new Admin((String) dataMap.get("firstName"), (String) dataMap.get("lastName"), (String) dataMap.get("userName"),
+                        (String) dataMap.get("level"), (String) dataMap.get("profilePicUrl"), null);
+                GroupDao.this.groupdao.setAdmin(admin);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
+        return this.groupdao;
 
-        this.groupdao.setListStudents(studentList);
     }
+
+   
 
 
     public void getGroups(List<Object> listObjects,final Context context) {

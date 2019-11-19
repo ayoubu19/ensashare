@@ -5,26 +5,148 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 
 public class FileUploader {
     private StorageReference mStorageRef;
     private StorageReference  fileReference;
-
+    private StorageReference  httpsReference;
     private Context context ;
-    public static Uri uri;
 
+    public StorageReference getmStorageRef() {
+        return mStorageRef;
+    }
+
+    public StorageReference getFileReference() {
+        return fileReference;
+    }
+
+    public StorageReference getHttpsReference() {
+        return httpsReference;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public static Uri getUri() {
+        return uri;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public static Uri uri;
+    private String url;
+    private Task<Uri> urlTask;
+
+    public Task<Uri> getUrlTask() {
+        return urlTask;
+    }
+    public UploadTask getUploadTask() {
+        return uploadTask;
+    }
+
+    private UploadTask uploadTask;
+	
+	 public String uploadFile2(Uri uri) {
+        if (uri != null) {
+            fileReference = mStorageRef.child(System.currentTimeMillis()
+                    + "." + getFileExtension(uri));
+            uploadTask = fileReference.putFile(uri);
+            urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    // Continue with the task to get the download URL
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        FileUploader.this.url = task.getResult().toString();
+                        Toast.makeText(context,  task.getResult().getPath() , Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+        return this.url;
+    }
+
+    public void deleteFile(String url){
+        httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(url);
+        httpsReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        });
+    }
+	
+	
+	public FileUploader(String  httpsRef) {
+        httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(httpsRef);
+    }
+	
+	 public void downloadFile(final String url){
+
+        httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(url);
+        httpsReference.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                String intStorageDirectory = Environment.getExternalStoragePublicDirectory
+                        (Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+                File myDir = new File(intStorageDirectory);
+
+
+                String name = "0" + httpsReference.getName();
+                myDir = new File(myDir, name);
+
+
+                try{
+                    FileOutputStream fos = new FileOutputStream(myDir);
+                    fos.write(bytes);
+                    fos.flush();
+                    fos.close();
+                }
+                catch (Exception e){
+                    Toast.makeText(context, "nop", Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+        });
+    }
+
+	
+	
+	 public String getNameReferenece(String httpsRef){
+        httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(httpsRef);
+        return httpsReference.getName();
+    }
 
 
     public FileUploader(Context context, String location ) {

@@ -6,12 +6,25 @@ import java.util.HashMap;
 
 public class Student extends User  {
 
-
-   private String level ;
+   private String studentId ;
+   protected String level ;
 
    private HashMap<String,Object> groups ;
 
+   public Student(String firstName, String lastName, String userName, String level, String profilePic){
+       this.firstName = firstName;
+       this.lastName = lastName;
+       this.userName = userName;
+       this.ProfilePic = profilePic;
+       this.level = level;
+    }
+	public String getStudentId() {
+        return studentId;
+    }
 
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
 
     public HashMap<String, Object> getGroups() {
         return groups;

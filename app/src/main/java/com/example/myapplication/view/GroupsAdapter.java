@@ -82,11 +82,11 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.MyViewHold
                 public void onClick(View v) {
                     Toast.makeText(context, groupname.getText(), Toast.LENGTH_LONG).show();
 
-                    Intent  i = new Intent(context, group.class);
+                   Intent i = new Intent(context, group.class);
 
-                    i.putExtra("student",student);
+                     i.putExtra("student",student);
 
-                    i.putExtra("groupName",groupname.getText());
+                     i.putExtra("groupName",groupname.getText());
 
                     context.startActivity(i);
 

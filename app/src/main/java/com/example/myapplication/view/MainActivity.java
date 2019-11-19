@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         signup1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                pop_up_signup.showPopUpsignup(MainActivity.this);
+
             }
 
         });
