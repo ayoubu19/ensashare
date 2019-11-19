@@ -164,7 +164,7 @@ Student student ;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                adapter = new GroupsAdapter(HomeFragment.this.context, HomeFragment.this.listGroup);
+                adapter = new GroupsAdapter(HomeFragment.this.context, HomeFragment.this.listGroup ,  HomeFragment.this.student);
                 recyclerView.setAdapter(adapter);
 
             }

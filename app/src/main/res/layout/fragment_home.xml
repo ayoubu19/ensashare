@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
 
-                    android:text="Recmmendations "
+                    android:text="Recommendations "
                     android:textColor="#000000"
                     android:textSize="24sp"
                     android:textStyle="bold"

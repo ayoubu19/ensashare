@@ -99,6 +99,7 @@ public class signup1 extends AppCompatActivity{
                      i.putExtra("student",student);
 
                      i.putExtra("profileImage",imageUri);
+
                       startActivity(i);
 
 

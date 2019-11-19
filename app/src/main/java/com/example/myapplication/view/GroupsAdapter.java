@@ -1,6 +1,7 @@
 package com.example.myapplication.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.model.Group;
+import com.example.myapplication.model.Student;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,13 +24,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.MyViewHolder>  {
     Context context;
     ArrayList<Group> groups;
+    Student student ;
 
 
 
-    public GroupsAdapter(Context c, ArrayList<Group> g) {
+    public GroupsAdapter(Context c, ArrayList<Group> g, Student s ) {
+
         context = c;
         groups = g;
-
+        student = s ;
     }
 
     @NonNull
@@ -77,6 +81,14 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.MyViewHold
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, groupname.getText(), Toast.LENGTH_LONG).show();
+
+                    Intent  i = new Intent(context, group.class);
+
+                    i.putExtra("student",student);
+
+                    i.putExtra("groupName",groupname.getText());
+
+                    context.startActivity(i);
 
                 }
             });
