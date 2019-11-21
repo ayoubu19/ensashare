@@ -10,7 +10,6 @@
 
 
  <TextView
-     android:id="@+id/textView12"
      android:layout_width="357dp"
      android:layout_height="64dp"
      android:gravity="center"

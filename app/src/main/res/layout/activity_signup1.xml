@@ -85,17 +85,18 @@
             android:layout_marginTop="20dp"
             android:text="Last Name" />
 
+
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/lastName"
             android:layout_width="280dp"
             android:layout_height="36dp"
             android:layout_gravity="center"
             android:background="@drawable/shadow_input"
+            android:ems="10"
             android:gravity="center"
             android:importantForAutofill="no"
-            android:inputType="textPassword"
-            tools:ignore="LabelFor"
-            tools:targetApi="o" />
+            android:inputType="textPersonName"
+            />
 
         <TextView
             android:id="@+id/textView8"

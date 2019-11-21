@@ -74,10 +74,6 @@ public class signupstudent2 extends AppCompatActivity {
         student = (Student) extras.getSerializable("student");
         final Uri imagePath = (Uri) extras.get("profileImage");
 
-       //Toast.makeText(signupstudent2.this,imagePath.toString(), Toast.LENGTH_LONG).show();
-
-
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,56 +83,46 @@ public class signupstudent2 extends AppCompatActivity {
                   String email = student.getUserName()+"@ensaShare.com";
                   String pass = password.getText().toString();
 
+
                   studentAuth.createUserWithEmailAndPassword(email,pass)
                           .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                               @Override
                               public void onComplete(@NonNull Task<AuthResult> task) {
 
                                   if (task.isSuccessful()){
-                                   fileUploader.uploadFile(imagePath ,progressDialog);
 
+                                      fileUploader.uploadFile(imagePath ,progressDialog);
 
                                       Handler handler = new Handler();
-
 
                                       handler.postDelayed(new Runnable() {
                                           @Override
                                           public void run() {
 
-
                                               student.setProfilePic(FileUploader.uri.toString());
                                               HashMap<String,Object> groups = new HashMap<>();
                                               groups.put("entry","entry");
                                               student.setGroups(groups);
-                                              Toast.makeText(getApplicationContext(), student.getProfilePic()
-                                                     , Toast.LENGTH_SHORT).show();
+
 
                                               final String groupName = student.getLevel().toLowerCase();
 
-
                                               DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("groups").child("group:"+groupName);
 
-                                              Toast.makeText(getApplicationContext(),groupName, Toast.LENGTH_SHORT).show();
+
 
 
                                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                                   @Override
                                                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
-
                                                       if (dataSnapshot.exists()) {
-                                                          Toast.makeText(getApplicationContext(),dataSnapshot.toString(),
-                                                                  Toast.LENGTH_SHORT).show();
-
 
 
                                                          Object data = (HashMap<String, Object>) dataSnapshot.child("Admin").getValue();
                                                          HashMap<String, Object> dataMap = (HashMap<String, Object>) data;
 
 
-                                                          Toast.makeText(getApplicationContext(),dataMap.get("userName").toString(),
-                                                                  Toast.LENGTH_SHORT).show();
 
                                                             String invitationid =student.getUserName()+"-"+groupName;
 
@@ -145,8 +131,7 @@ public class signupstudent2 extends AppCompatActivity {
                                                                       , student.getLastName(), student.getProfilePic(), dataMap.get("userName").toString());
 
 
-                                                                Toast.makeText(getApplicationContext(),invitation.toString(),
-                                                                        Toast.LENGTH_SHORT).show();
+
 
 
                                                          UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest
@@ -155,21 +140,17 @@ public class signupstudent2 extends AppCompatActivity {
                                                                   .setPhotoUri(FileUploader.uri)
                                                                   .build();
 
-                                                          studentAuth.getCurrentUser().updateProfile(profileUpdate);
+                                                           studentAuth.getCurrentUser().updateProfile(profileUpdate);
 
+                                                           student.sendInvitation(invitation);
 
-                                                            student.sendInvitation(invitation);
+                                                           studentdao.registerStudent(student);
 
-                                                            studentdao.registerStudent(student);
+                                                          pop_up_registered.showPopUpregistered(signupstudent2.this);
 
                                                             }
 
-
-
                                                       }
-
-
-
 
                                                   @Override
                                                   public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -178,14 +159,8 @@ public class signupstudent2 extends AppCompatActivity {
                                               });
 
 
-
-                                               //  Intent i = new Intent(getApplicationContext() , MainActivity.class);
-                                              //startActivity(i);
-
-
-
                                           }
-                                      }, 8000);
+                                      }, 5000);
 
 
 

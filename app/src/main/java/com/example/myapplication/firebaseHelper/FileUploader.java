@@ -178,17 +178,13 @@ public class FileUploader {
                           fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                               @Override
                                 public void onSuccess(Uri uri) {
-                                //  Toast.makeText(context,  uri.toString(), Toast.LENGTH_SHORT).show();
-                                  FileUploader.uri= uri;
 
-                                //  Toast.makeText(context, " this is url " + url, Toast.LENGTH_SHORT).show();
+                                  FileUploader.uri= uri;
 
                                 }
                             });
 
-                          // url=taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
 
-                          // Toast.makeText(context, "File Uploaded "+" "+ url, Toast.LENGTH_LONG).show();
 
                         }
 
@@ -210,6 +206,7 @@ public class FileUploader {
                     p.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 
                    p.setProgress((int)progress);
+
                    if (p.getProgress()==100){
                        p.dismiss();
                    }else{

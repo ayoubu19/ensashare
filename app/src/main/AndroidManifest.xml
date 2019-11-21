@@ -31,6 +31,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.pop_up_signup" />
+        <activity android:name=".view.pop_up_registered" />
+        <activity android:name=".view.pop_up_notverified" />
 
         <meta-data
             android:name="preloaded_fonts"

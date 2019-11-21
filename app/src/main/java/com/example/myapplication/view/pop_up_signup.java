@@ -16,6 +16,7 @@ public class pop_up_signup extends AppCompatActivity {
       static Intent intent;
 
     public static void showPopUpsignup(final MainActivity mainActivity){
+
         final ImageView teacher;
         final ImageView student;
         final TextView labelStudent;

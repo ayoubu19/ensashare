@@ -38,7 +38,7 @@ public class signup1 extends AppCompatActivity{
 
         addImage = findViewById(R.id.addImage);
         firstName = findViewById(R.id.groupname);
-        lastName = findViewById(R.id.password);
+        lastName = findViewById(R.id.lastName);
         imagenext = findViewById(R.id.nextsignup2Image);
         imageback = findViewById(R.id.backmainImage);
 
@@ -94,13 +94,16 @@ public class signup1 extends AppCompatActivity{
                 student.setFirstName(firstName.getText().toString());
                 student.setLastName(lastName.getText().toString());
 
-                 i = new Intent(signup1.this, signupstudent2.class);
+                i = new Intent(signup1.this, signupstudent2.class);
 
                      i.putExtra("student",student);
 
                      i.putExtra("profileImage",imageUri);
 
-                      startActivity(i);
+                startActivity(i);
+
+
+
 
 
 

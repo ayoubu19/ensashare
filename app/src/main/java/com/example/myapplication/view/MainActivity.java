@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
        });
         signup1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-               pop_up_signup.showPopUpsignup(MainActivity.this);
+
+                pop_up_signup.showPopUpsignup(MainActivity.this);
 
             }
 
@@ -170,7 +171,9 @@ public class MainActivity extends AppCompatActivity {
                    else {
                        Toast.makeText(getApplicationContext(),"not verified yet",
                                Toast.LENGTH_LONG).show();
+
                        loginProgress.setVisibility(View.INVISIBLE);
+                       pop_up_notverified.showPopUpnotVerified(MainActivity.this);
                    }
                                    }
                                }, 5000) ;
@@ -200,9 +203,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void updateUI(){
-   startActivity(adminProfile);
-   finish();
+    public void updateUI(FirebaseUser user){
+
+
+    finish();
     }
 
     @Override
@@ -210,7 +214,10 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = userAuth.getCurrentUser();
         if (user!=null){
-           // updateUI();
+
+           // updateUI(user);
+
+
         }
     }
 

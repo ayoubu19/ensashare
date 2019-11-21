@@ -86,7 +86,8 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.My
                 public void onClick(View v) {
 
                     String[]isGroup=invitation.getInvitationId().split("-");
-                    if(!isGroup[1].startsWith("C")) {
+
+                   if(!isGroup[1].startsWith("C")) {
 
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students").child(invitation.getUserName()).child("groups");
 
@@ -179,24 +180,41 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.My
             notifyItemRemoved(index);
         }
 
-        public void refuserInvitation(final Invitation invitation, final Context context , final int index){
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("invitations").child(invitation.getUserName());
-            Toast.makeText(context,databaseReference.toString(),Toast.LENGTH_SHORT).show();
-            databaseReference.removeValue(new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                    Toast.makeText(context,"invitation deleted",Toast.LENGTH_SHORT).show();
-                    DatabaseReference Reference = FirebaseDatabase.getInstance().getReference("students").child(invitation.getUserName());
-                    Reference.removeValue(new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                            Toast.makeText(context,"student deleted",Toast.LENGTH_SHORT).show();
-                            deleteItem(index);
-                        }
-                    });
-                }
-            });
+        public void refuserInvitation(final Invitation invitation, final Context context , final int index) {
+            String[] isGroup = invitation.getInvitationId().split("-");
 
+            if (!isGroup[1].startsWith("C")) {
+
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("invitations").child(invitation.getInvitationId());
+                Toast.makeText(context, databaseReference.toString(), Toast.LENGTH_SHORT).show();
+                databaseReference.removeValue(new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                        Toast.makeText(context, "invitation deleted", Toast.LENGTH_SHORT).show();
+                        DatabaseReference Reference = FirebaseDatabase.getInstance().getReference("students").child(invitation.getUserName());
+                        Reference.removeValue(new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                Toast.makeText(context, "student deleted", Toast.LENGTH_SHORT).show();
+                                deleteItem(index);
+                            }
+                        });
+                    }
+                });
+
+            }
+            else {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("invitations").child(invitation.getInvitationId());
+                Toast.makeText(context, databaseReference.toString(), Toast.LENGTH_SHORT).show();
+                databaseReference.removeValue(new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                        Toast.makeText(context, "invitation deleted", Toast.LENGTH_SHORT).show();
+                        deleteItem(index);
+                    }
+                });
+
+            }
         }
     }
 }
