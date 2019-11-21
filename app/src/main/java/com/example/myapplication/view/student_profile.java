@@ -29,7 +29,7 @@ public class student_profile extends AppCompatActivity {
     public void init(){
         mainNav =(BottomNavigationView)findViewById(R.id.main_nav);
         mainFrame =(FrameLayout)findViewById(R.id.main_frame);
-      homeFragment = new HomeFragmentStudent();
+        homeFragment = new HomeFragmentStudent();
          notificationFragment= new NotificationFragment();
 
        mapFragment=new MapFragment();
